@@ -19,7 +19,10 @@ test('translate without any options', async t => {
     t.is(res.from.text.value, '');
     t.false(res.from.text.didYouMean);
 });
-
+test('my test', async t => {
+    const res = await translate('adios');
+    t.is(res.from.language.iso, 'es');
+});
 test('translate from auto to dutch', async t => {
     const res = await translate('translator', {from: 'auto', to: 'nl'});
 
@@ -150,23 +153,24 @@ test('translate via an external language from outside of the API', async t => {
     t.is(res.from.language.iso, 'en');
 });
 
-test('pass got options', async t => {
-    let a = 0;
-    const gotopts = {
-        hooks: {
-            afterResponse: [
-                response => {
-                    a++;
-                    return response;
-                }
-            ]
-        }
-    };
-    const res = await translate('vertaler', {}, gotopts);
+// ! removed this because this is a got option, unncessary with axios
+// test('pass got options', async t => {
+//     let a = 0;
+//     const gotopts = {
+//         hooks: {
+//             afterResponse: [
+//                 response => {
+//                     a++;
+//                     return response;
+//                 }
+//             ]
+//         }
+//     };
+//     const res = await translate('vertaler', {}, gotopts);
 
-    t.is(res.text, 'translator');
-    t.is(a, 1);
-});
+//     t.is(res.text, 'translator');
+//     t.is(a, 1);
+// });
 
 test('test get zh code', t => {
     t.false(languages.getCode('zh'));
