@@ -1,8 +1,7 @@
 var querystring = require('querystring');
 
-var got = require('got');
 var token = require('@vitalets/google-translate-token');
-
+var axios = require('axios');
 var languages = require('./languages');
 
 function translate(text, opts, gotopts) {
@@ -49,7 +48,7 @@ function translate(text, opts, gotopts) {
 
         return url + '?' + querystring.stringify(data);
     }).then(function (url) {
-        return got(url, gotopts).then(function (res) {
+        return axios.get(url, gotopts).then(function (res) {
             var result = {
                 text: '',
                 pronunciation: '',
@@ -68,10 +67,12 @@ function translate(text, opts, gotopts) {
             };
 
             if (opts.raw) {
-                result.raw = res.body;
+                result.raw = res.data;
             }
 
-            var body = JSON.parse(res.body);
+            var body = (res.data);
+            // console.log(JSON.stringify(res.data, undefined, 4));
+            // console.log('------------------------------------');
             body[0].forEach(function (obj) {
                 if (obj[0]) {
                     result.text += obj[0];
